@@ -1,7 +1,18 @@
 
 import { auth } from '../lib/utils';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+// Get base API URL, handling both with and without /api suffix
+const getApiBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl) {
+    // If the env URL already includes /api, use it as is, otherwise add /api
+    return envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`;
+  }
+  // Default localhost fallback
+  return 'http://localhost:3000/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 // Utility function to get authorization headers
 const getAuthHeaders = () => {
