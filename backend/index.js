@@ -4,12 +4,29 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 require('dotenv').config();
 
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
+// CORS configuration for deployed frontend domains
+const allowedOrigins = [
+  'https://cvai-beta.vercel.app',
+  'https://clarityvault-ai.vercel.app',
+  'http://localhost:5173', // local dev
+];
 app.use(helmet()); // Security headers
-app.use(cors()); // Enable CORS
+app.use(cors({
+  origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+}));
 app.use(morgan('combined')); // Logging
 app.use(express.json({ limit: '10mb' })); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
