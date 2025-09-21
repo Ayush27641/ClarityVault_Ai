@@ -8,23 +8,10 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// CORS configuration for deployed frontend domains
-const allowedOrigins = [
-  'https://cvai-beta.vercel.app',
-  'https://clarityvault-ai.vercel.app',
-  'http://localhost:5173', // local dev
-];
+// CORS: allow all origins (for development/debugging)
 app.use(helmet()); // Security headers
 app.use(cors({
-  origin: function (origin, callback) {
-    // allow requests with no origin (like mobile apps, curl, etc.)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: '*',
   credentials: true,
 }));
 app.use(morgan('combined')); // Logging
