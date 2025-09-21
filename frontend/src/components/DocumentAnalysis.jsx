@@ -24,9 +24,7 @@ import toast from "react-hot-toast";
 import { useTheme } from "./theme-provider";
 
 // API Configuration
-const API_BASE_URL = import.meta.env.VITE_API_URL
-  ? import.meta.env.VITE_API_URL.replace(/\/api$/, "")
-  : "http://localhost:3000";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
 // Create authorized axios instance
 const createAuthorizedRequest = () => {
